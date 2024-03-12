@@ -114,4 +114,14 @@ select id, cliente_id, data_pedido from pedidos;
  select c.id, c.nome, p.id, p.data_pedido, p.cliente_id from clientes c 
 left join pedidos p on c.id = p.cliente_id; 
 
-/*aqui estamos selecionando todos os registros da abela clientes e os re*/
+/*aqui estamos selecionando todos os registros da abela clientes e os registros 
+ * correspondentes da tabela pedidos, se houver, com base na correspondência de id e clientes_id*/
+
+/*Right Join:Retorna todos os registros da tabela da direita (segunda tabela mencionada) e os
+ * registro correspondentes da tabela da esquerda (primeira tabela mencionada)
+ */
+select c.id, c.nome, p.id, p.data_pedido, p.cliente_id from clientes c 
+ right join pedidos p on c.id = p.cliente_id; 
+/*este comando retorna todos os registros da tabela pedidos e os registros correspondentes
+ * da tabela clientes, se houver, com base na correspondência de id e cliente_id
+ * */
