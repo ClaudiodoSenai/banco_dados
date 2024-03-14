@@ -56,7 +56,7 @@ insert into cores_frutas (cores_id,frutas_id)
 select c.id as cores_id ,f.id as frutas_id  from cores c
 cross join frutas f; 
 
-select cores_id, frutas_id from cores_frutas
+select cores_id, frutas_id from cores_frutas;
 
 create table clientes (
 id int,
