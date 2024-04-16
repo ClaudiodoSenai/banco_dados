@@ -95,7 +95,8 @@ insert into disciplinas (nome,professor_id,codigo) values ('quimica',3,'QUI090')
 insert into disciplinas (nome,professor_id,codigo) values ('matematica',2, 'MAT101');
 insert into disciplinas (nome,professor_id,codigo) values ('artes',2,'ART097');
 insert into disciplinas (nome,professor_id,codigo) values ('lingua portuguesa',1,'LPT0983');
-
+insert into disciplinas (nome,professor_id,codigo) values ('história',1,'HIS098');
+insert into disciplinas (nome,professor_id,codigo) values ('Biologia',3,'BIO98');
 
 select id, nome, professor_id from disciplinas ;
 
@@ -169,8 +170,14 @@ values
 (20,08,1),
 -- notas para química 
 (1,10,2),
+(1,5,2),
+(1,9,2),
 (2,0,2),
+(2,2,2),
+(2,4,2),
 (3,09,2),
+(3,09,2),
+
 -- notas matemática 
 (1,10,3),
 (2,0,3),
@@ -182,7 +189,15 @@ values
 -- notas lingua portuguesa 
 (1,10,5),
 (2,07,5),
-(3,9,5);
+(3,9,5),
+-- NOTAS PARA HISTÓRIA
+(1,10,6),
+(2,07,6),
+(3,9,6),
+-- Notas para Biologia
+(3,10,7),
+(1,05,7),
+(2,07,7);
 
 select * from notas ;
 -- tarefa 1
@@ -220,7 +235,147 @@ inner join alunos a on a.nome = a.nome
 inner join disciplinas d on d.id = n.disciplina_id
 where n.notas >= 7 and d.codigo = 'MAT101';
 
--- 7
+-- tarefa 7
+select n.notas, a.nome, d.nome, d.codigo, d.id  from notas n  
+inner join alunos a on a.id = n.aluno_id 
+inner join disciplinas d on d.id = n.disciplina_id
+where n.notas >2 and d.nome = 'matematica';
+
+-- exercício 8
+select n.notas, a.nome, d.nome, d.id  from notas n  
+inner join alunos a on a.id = n.aluno_id 
+inner join disciplinas d on d.id = n.disciplina_id
+where n.notas < 7;
+
+-- exercício 9
+select a.nome, a.dt_nascimento from alunos a 
+where a.dt_nascimento > '2000-02-04';
+
+-- exercício 10
+select a.nome as alunos, d.nome as disciplina, n.notas from notas n 
+left join alunos a on a.id = n.aluno_id
+left join disciplinas d on d.id = n.disciplina_id where isnull(n.notas);
+
+-- exercicio 11
+
+select a.nome 
+from alunos a
+inner join alunos_has_disciplinas ahd on a.id = ahd.alunos_id
+inner join disciplinas d on ahd.disciplina_id = d.id
+inner join professores p on d.professor_id = p.id
+where p.especialidade = 'php';
+
+-- exercicio 12. 
+select a.nome
+from alunos a
+inner join alunos_has_disciplinas ad on a.id = ad.alunos_id
+inner join disciplinas d on ad.disciplina_id = d.id
+inner join professores p on d.professor_id = p.id
+where p.grau_academico = 'formado em bdeaver';
+
+
+-- exercicio 13. 
+select d.nome as disciplina
+from disciplinas d
+LEFT JOIN professores p on d.professor_id = p.id
+where p.id is NULL;
+
+
+
+-- exercico 14
+select count(alunos_id) as total from alunos_has_disciplinas ad  where disciplina_id = 1;
+
+-- exercicio 15
+select sum(notas) as soma_total from notas  
+where disciplina_id = 1;
+
+-- exercicio 16
+select max(notas) as maior_nota from notas n
+where disciplina_id = 6;
+
+-- exercicio 17
+select min(notas) as menor_nota from notas n
+where disciplina_id = 2;
+
+-- exercicio 18
+select avg(notas) as media from notas n
+where disciplina_id = 7;
+
+-- exercicio 19
+select d.nome AS disciplina, count(a.id) as numero_de_alunos
+from disciplinas d
+join alunos_has_disciplinas ad on d.id = ad.disciplina_id
+join alunos a on ad.alunos_id = a.id
+group by d.nome;
+
+-- exercício 20
+select sum(notas) from notas;
+-- exercício 21
+select max(notas) as maior_nota_total  from notas;
+
+-- exercício 22
+select min(notas) as menor_nota_total from notas;
+
+-- exercício 23
+select avg(notas) as media_nota_total from notas;
+
+-- exercício 24
+select d.nome AS Disciplina, avg(n.notas) AS Media_Notas
+from disciplinas d
+join notas n ON d.id = n.disciplina_id
+group by d.nome;
+
+-- exercicio 25
+
+select d.nome AS disciplina,a.nome as aluno,avg(n.notas) as media
+from notas n
+join alunos a on n.aluno_id = a.id
+join disciplinas d on n.disciplina_id = d.id
+group by d.nome, a.nome
+order by d.nome asc, a.nome asc;
+
+-- exercicio 26
+select d.nome AS disciplina,a.nome as aluno,avg(n.notas) as media
+from notas n
+join alunos a on n.aluno_id = a.id
+join disciplinas d on n.disciplina_id = d.id
+group by d.nome, a.nome
+order by d.nome asc, media desc;
+
+-- exercicios fckvioo 27
+select a.nome as aluno,n.notas as nota from notas n
+join alunos a on n.aluno_id = a.id
+join disciplinas d on n.disciplina_id = d.id
+where d.nome = 'História'
+order by n.notas asc limit 5;
+
+-- exercicios 28
+SELECT a.nome AS aluno,avg(n.notas) AS media from notas n
+join alunos a on n.aluno_id = a.id
+join disciplinas d on n.disciplina_id = d.id
+where d.nome = 'Química'
+group by a.nome 
+order by media desc limit 3;
+
+-- exercicios 29 
+SELECT a.nome AS aluno,avg(n.notas) AS media from notas n
+join alunos a on n.aluno_id = a.id
+join disciplinas d on n.disciplina_id = d.id
+group by a.nome 
+order by media desc limit 10;
+
+-- exercicios 30
+select count(distinct  a.id) AS numero_de_alunos_ativos from alunos a
+join alunos_has_disciplinas ad ON a.id = ad.alunos_id;
+
+/* usado para remover duplicatas de um conjunto de resultados. Quando você executa uma consulta que pode retornar múltiplas linhas com os mesmos valores 
+ * em uma ou mais colunas, 
+ * o DISTINCT garante que cada valor único seja retornado apenas uma vez. Isso é particularmente útil em situações onde você deseja evitar contagens ou listagens duplicadas.*/
+
+
+
+
+
 
 
 
